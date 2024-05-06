@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <title>How much do you want to bet?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+        }
+
+        section {
+            max-width: 600px;
+            margin: 2em auto;
+            padding: 2em;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.5em;
+        }
+
+        input, textarea {
+            margin-bottom: 1em;
+            padding: 0.5em;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 0.5em;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #contractFinal {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>How much do you want to bet?</h1>
+    </header>
+
+    <section id="aboutUs">
+        <h2>About Us</h2>
+        <p>How confident are you? <br/> <br/> 
+            I only ask because you are on this site. <br/> <br/>  
+            Your friend that you are talking with has decided that one of the claims or remarks you've made cannot be backed up and would now like to challenge you to a bet. <br/> <br/> 
+            That is where we come in. <br/> <br/> 
+            If you stand by your remarks - you will fill out this form. It will capture the bet so that you cannot dare risk the shame and dishonor of breaking one's word. <br/> <br/> 
+            Fill out the form below and stand by your word.
+        </p>
+    </section>
+
+    <section id="contractSection">
+        <h2>The Contract Terms</h2>
+        <p>Fill out the form below with consultation from the other party, then hit "Submit" to enter into the bet.</p> <br/>
+
+        <form id="betForm" action="/submit" method="post">
+            <label for="yourName">Your First Name and Last Name:</label>
+            <input type="text" id="yourName" name="yourName" required>
+
+            <label for="otherName">Other Party's First Name and Last Name:</label>
+            <input type="text" id="otherName" name="otherName" required>
+        
+            <label for="betName">Bet Name:<div id="defaultBetName"></div></label>
+            <input type="text" id="betName" name="betName" required>
+
+            <label for="betAmount">Bet Amount:</label>
+            <input type="number" id="betAmount" name="betAmount" required>
+
+            <label for="betDescription">Bet Description:</label>
+            <textarea id="betDescription" name="betDescription" rows="6" required></textarea>
+
+            <button type="button" onclick="generateContract()">Submit</button>
+        </form>
+    </section>
+
+    <section id="contractFinal">
+
+        <div id="contractTerms"></div>
+
+        <div id="finalDisplay">
+            <br>
+            <h4>Penalty Options</h4>
+        </div>
+
+        <form id="penaltyOptions">
+            <label>
+                <input type="radio" name="options" value="extreme_hazing" checked> Extreme Hazing
+            </label>
+            <label>
+                <input type="radio" name="options" value="purchase_next_2_rounds"> Purchasing the Next 2 Rounds
+            </label>
+            <label>
+                <input type="radio" name="options" value="free_text_option"> Custom Penalty:
+                <input type="text" name="free_text_input">
+                <button type="button" id="refreshPenalty">Refresh</button>
+            </label>
+        </form>
+        
+
+        <p id="selectedOptionText"></p>
+
+        <form id="finalContractButton">
+            <button type="button" onclick="finaliseContract(); updateContractText();">Finalise Contract</button>
+        </form>
+        
+
+        <div id="disclaimerDiv">    
+            <p class="disclaimer">   
+                <h4>Disclaimer</h4>
+                <h4>General Notice</h4>
+                <p>This website ("Site") is intended solely to facilitate private agreements between parties. The content and services provided by the Site are for informational purposes only. By using the Site, you acknowledge and agree that you are solely responsible for the accuracy and content of the information you provide and the agreements you enter into.</p>
+
+                <h4>Limitation of Liability</h4>
+                <p>The Site, including its owners, affiliates, and employees, shall not be liable for any actions taken by users of the Site or for any consequences that result from the enforcement or non-enforcement of the agreements facilitated through the Site. We do not participate in or enforce any agreements made between users.</p>
+
+                <h4>No Endorsement</h4>
+                <p>We do not endorse or validate any statements, claims, or agreements made by users of the Site. All agreements are made at the users' own risk.</p>
+
+                <h4>Assumption of Risk</h4>
+                <p>By using the Site, you expressly agree to assume all risks associated with the agreements you enter into, including but not limited to financial loss, disputes, and legal implications.</p>
+
+                <h4>Compliance with Laws</h4>
+                <p>Users are responsible for ensuring that their activities on the Site comply with all applicable local, state, and national laws, including but not limited to those regulating online betting and gambling. The Site is not responsible for any illegal or unenforceable agreements made through its use.</p>
+
+                <h4>Modifications and Interruptions</h4>
+                <p>We reserve the right to change, modify, or remove the contents of the Site at any time or for any reason at our discretion without notice. Furthermore, we are not liable for any interruption or cessation of service.</p>
+
+                <h4>Governing Law</h4>
+                <p>This disclaimer and your use of the Site are governed by and construed in accordance with the laws of Australia and the state in which the Site operates. Any disputes arising out of or related to the Site and this disclaimer will be subject to the exclusive jurisdiction of the courts of that state.</p>
+
+                <h4>Severability</h4>
+                <p>If any provision of this disclaimer is determined to be unlawful, void, or for any reason unenforceable, then that provision shall be deemed severable from this disclaimer and shall not affect the validity and enforceability of any remaining provisions.</p>
+
+                <p>This disclaimer forms part of the Terms of Use of the Site.</p>
+            </p>
+        </div>
+
+        <div id="finaliseButtons" style="display: none;">    
+            <p>  
+                <h4>Signed,</h4>
+                <p id="fancyName1" style="font-family: 'Dancing Script', cursive;font-size: 24px;">Person 1</p>
+                <p id="fancyName2" style="font-family: 'Dancing Script', cursive;font-size: 24px;">Person 2</p>
+            </p>
+        </div>
+    </section>
+
+    <section id="printButton" style="display: none;">
+        <button onclick="printPDFButton()">Print PDF</button><br><br>
+        <button onclick="populateEmail()">Email PDF</button>
+    </section>
+
+
+    <script>
+
+        let contractHeader = 'Review The Contract Terms';
+
+        let yourName = document.getElementById('yourName').value;
+        let otherName = document.getElementById('otherName').value;
+        let betName = document.getElementById('betName').value;
+        let betAmount = document.getElementById('betAmount').value;
+        let betDescription = document.getElementById('betDescription').value;
+
+        function updateContractText() {
+
+            let selectedOptionText = getCurrentPenaltyText();
+
+            if (yourName === '') {
+                yourName = "Person 1 who forgot to enter their name";
+            }
+
+            if (otherName === '') {
+                otherName = "Other person 2 that forgot to enter their name";
+            }
+
+            if (betName === '') {
+                betName = "The Epic Bet Of Victory That Has Not Been Named";
+            }
+
+            if (betAmount === '') {
+                betAmount = "20";
+            }
+
+            if (betDescription === '') {
+                betDescription = "Person 2 is able to prove the ability to do 50 push-ups in 2 minutes";
+            }
+
+            const contractText = `
+                <h2>${contractHeader}</h2>
+                <p>Bet Name: ${betName}</p>
+                <p>I, ${yourName}, and ${otherName}, agree to participate in a bet.</p> 
+                <p>In the event of "${betDescription}", I will pay the sum of $${betAmount} to ${otherName}.</p>
+                <p>${otherName} will pay the sum of $${betAmount} to me, ${yourName}, in the event of "${betDescription}" not being fulfilled.</p>
+                <p>We both hereby accept the terms of this bet, and wholeheartedly agree to its terms, under the penalty of "${selectedOptionText}" in the event of reneging.</p>
+            `;
+            document.getElementById('contractTerms').innerHTML = contractText;
+        }
+
+
+        function getCurrentPenaltyText() {
+            const selectedRadioButton = document.querySelector('input[name="options"]:checked');
+            if (selectedRadioButton && selectedRadioButton.value === "free_text_option") {
+                return "Custom Penalty: " + document.querySelector('input[name="free_text_input"]').value;
+            } else if (selectedRadioButton) {
+                return selectedRadioButton.parentElement.textContent.trim();
+            }
+            return '';
+        }
+
+        function generateContract() {
+            updateContractText();
+            document.getElementById('contractFinal').style.display = "block";
+            document.getElementById('contractSection').style.display = "none";
+            document.getElementById('aboutUs').style.display = "none";
+
+            window.scrollTo({
+                top: 0, 
+                left: 0, 
+                behavior: 'smooth' 
+                });
+        }
+
+        const radioButtons = document.querySelectorAll('input[name="options"]');
+        radioButtons.forEach(radioButton => {
+            radioButton.addEventListener('change', () => {
+                updateContractText(); // Update contract text any time radio button changes
+            });
+        });
+
+        document.getElementById('refreshPenalty').addEventListener('click', updateContractText);
+
+        document.addEventListener('DOMContentLoaded', updateContractText);
+
+        function finaliseContract() {
+            document.getElementById('disclaimerDiv').style.display = "none";  
+            document.getElementById('penaltyOptions').style.display = "none";
+            document.getElementById('finalDisplay').style.display = "none";
+            document.getElementById('finalContractButton').style.display = "none";
+            document.getElementById('finaliseButtons').style.display = "block";
+            document.getElementById('printButton').style.display = "block";
+
+            contractHeader = 'The Contract';
+
+            updateContractText();
+
+            document.getElementById('fancyName1').textContent = yourName;
+            document.getElementById('fancyName2').textContent = otherName;
+
+            window.scrollTo({
+                top: 0, 
+                left: 0, 
+                behavior: 'smooth' 
+                });
+        }
+
+        function printPDFButton() {
+            document.getElementById('printButton').style.display = 'none';
+            
+            window.print();
+
+            document.getElementById('printButton').style.display = 'block';
+        }
+
+        function populateEmail(subject, bodyText) {
+            var encodedSubject = encodeURIComponent(subject);
+            var encodedBody = encodeURIComponent(`
+                    Please attach a copy of the PDF, then send this email to the other party.
+                    The terms are now set.
+                    You are both now locked-in.
+                    What are we if we do not live up to our word?
+                    May the best man or woman win. 
+                    Good luck.
+                `);
+            var mailtoLink = `mailto:?subject=${betName}&body=${encodedBody}`;
+
+            window.location.href = mailtoLink;
+        }
+
+    </script>
+
+    </body>
+</html>

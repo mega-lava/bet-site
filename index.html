@@ -69,18 +69,18 @@
 
     <section id="aboutUs">
         <h2>About Us</h2>
-        <p>How confident are you? <br/> <br/> 
-            I only ask because you are on this site. <br/> <br/>  
-            Your friend that you are talking with has decided that one of the claims or remarks you've made cannot be backed up and would now like to challenge you to a bet. <br/> <br/> 
-            That is where we come in. <br/> <br/> 
-            If you stand by your remarks - you will fill out this form. It will capture the bet so that you cannot dare risk the shame and dishonor of breaking one's word. <br/> <br/> 
+        <p>How confident are you? <br/><br/> 
+            I only ask because you are on this site. <br/><br/>  
+            Your friend that you are talking with has decided that one of the claims or remarks you've made cannot be backed up and would now like to challenge you to a bet. <br/><br/> 
+            That is where we come in. <br/><br/> 
+            If you stand by your remarks - you will fill out this form. It will capture the bet so that you cannot dare risk the shame and dishonor of breaking one's word. <br/><br/> 
             Fill out the form below and stand by your word.
         </p>
     </section>
 
     <section id="contractSection">
         <h2>The Contract Terms</h2>
-        <p>Fill out the form below with consultation from the other party, then hit "Submit" to enter into the bet.</p> <br/>
+        <p>Fill out the form below with consultation from the other party, then hit "Submit" to enter into the bet.</p><br/>
 
         <form id="betForm" action="/submit" method="post">
             <label for="yourName">Your First Name and Last Name:</label>
@@ -98,7 +98,7 @@
             <label for="betDescription">Bet Description:</label>
             <textarea id="betDescription" name="betDescription" rows="6" required></textarea>
 
-            <button type="button" onclick="generateContract()">Submit</button>
+            <button type="button" onclick="generateContract(), updateContractText()">Submit</button>
         </form>
     </section>
 
@@ -129,7 +129,7 @@
         <p id="selectedOptionText"></p>
 
         <form id="finalContractButton">
-            <button type="button" onclick="finaliseContract(); updateContractText();">Finalise Contract</button>
+            <button type="button" onclick="finaliseContract();">Finalise Contract</button>
         </form>
         
 
@@ -167,8 +167,8 @@
         <div id="finaliseButtons" style="display: none;">    
             <p>  
                 <h4>Signed,</h4>
-                <p id="fancyName1" style="font-family: 'Dancing Script', cursive;font-size: 24px;">Person 1</p>
-                <p id="fancyName2" style="font-family: 'Dancing Script', cursive;font-size: 24px;">Person 2</p>
+                <p id="fancyName1" style="font-family: 'Dancing Script', cursive; font-size: 24px;"></p>
+                <p id="fancyName2" style="font-family: 'Dancing Script', cursive; font-size: 24px;"></p>
             </p>
         </div>
     </section>
@@ -183,18 +183,19 @@
 
         let contractHeader = 'Review The Contract Terms';
 
-        let yourName = document.getElementById('yourName').value;
-        let otherName = document.getElementById('otherName').value;
-        let betName = document.getElementById('betName').value;
-        let betAmount = document.getElementById('betAmount').value;
-        let betDescription = document.getElementById('betDescription').value;
-
         function updateContractText() {
-
             let selectedOptionText = getCurrentPenaltyText();
+
+            let yourName = document.getElementById('yourName').value;
+            let otherName = document.getElementById('otherName').value;
+            let betName = document.getElementById('betName').value;
+            let betAmount = document.getElementById('betAmount').value;
+            let betDescription = document.getElementById('betDescription').value;
 
             if (yourName === '') {
                 yourName = "Person 1 who forgot to enter their name";
+                document.getElementById("fancyName1").textContent = yourName;
+
             }
 
             if (otherName === '') {
@@ -217,13 +218,12 @@
                 <h2>${contractHeader}</h2>
                 <p>Bet Name: ${betName}</p>
                 <p>I, ${yourName}, and ${otherName}, agree to participate in a bet.</p> 
-                <p>In the event of "${betDescription}", I will pay the sum of $${betAmount} to ${otherName}.</p>
+                <p>In the event of "${betDescription}", ${yourName} will pay the sum of $${betAmount} to ${otherName}.</p>
                 <p>${otherName} will pay the sum of $${betAmount} to me, ${yourName}, in the event of "${betDescription}" not being fulfilled.</p>
                 <p>We both hereby accept the terms of this bet, and wholeheartedly agree to its terms, under the penalty of "${selectedOptionText}" in the event of reneging.</p>
             `;
             document.getElementById('contractTerms').innerHTML = contractText;
         }
-
 
         function getCurrentPenaltyText() {
             const selectedRadioButton = document.querySelector('input[name="options"]:checked');
@@ -245,7 +245,7 @@
                 top: 0, 
                 left: 0, 
                 behavior: 'smooth' 
-                });
+            });
         }
 
         const radioButtons = document.querySelectorAll('input[name="options"]');
@@ -260,6 +260,9 @@
         document.addEventListener('DOMContentLoaded', updateContractText);
 
         function finaliseContract() {
+            let yourName = document.getElementById('yourName').value;
+            let otherName = document.getElementById('otherName').value;
+
             document.getElementById('disclaimerDiv').style.display = "none";  
             document.getElementById('penaltyOptions').style.display = "none";
             document.getElementById('finalDisplay').style.display = "none";
@@ -269,42 +272,50 @@
 
             contractHeader = 'The Contract';
 
-            updateContractText();
+            updateContractText();  // Ensure contract text is updated with latest input values
 
-            document.getElementById('fancyName1').textContent = yourName;
-            document.getElementById('fancyName2').textContent = otherName;
+            document.getElementById('fancyName1').textContent = yourName;  // Update text content with latest yourName
+            document.getElementById('fancyName2').textContent = otherName; // Update text content with latest otherName
+
+            if (document.getElementById('fancyName1').textContent === "") {
+                document.getElementById('fancyName1').textContent = "Person 1 who forgot to enter their name";
+            }
+
+            if (document.getElementById('fancyName2').textContent === "") {
+                document.getElementById('fancyName2').textContent = "Other person 2 who forgot to enter their name";
+            }
+
 
             window.scrollTo({
                 top: 0, 
                 left: 0, 
                 behavior: 'smooth' 
-                });
+            });
         }
 
         function printPDFButton() {
             document.getElementById('printButton').style.display = 'none';
-            
             window.print();
-
             document.getElementById('printButton').style.display = 'block';
         }
 
-        function populateEmail(subject, bodyText) {
-            var encodedSubject = encodeURIComponent(subject);
-            var encodedBody = encodeURIComponent(`
-                    Please attach a copy of the PDF, then send this email to the other party.
-                    The terms are now set.
-                    You are both now locked-in.
-                    What are we if we do not live up to our word?
-                    May the best man or woman win. 
-                    Good luck.
-                `);
-            var mailtoLink = `mailto:?subject=${betName}&body=${encodedBody}`;
+        function populateEmail() {
+            let betName = document.getElementById('betName').value;
+            var subject = "Bet Agreement: " + betName;
+            var bodyText = `
+                Please attach a copy of the PDF, then send this email to the other party.
+                The terms are now set.
+                You are both now locked-in.
+                What are we if we do not live up to our word?
+                May the best man or woman win. 
+                Good luck.
+            `;
+            var mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
 
             window.location.href = mailtoLink;
         }
 
     </script>
 
-    </body>
+</body>
 </html>
